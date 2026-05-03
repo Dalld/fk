@@ -1,0 +1,6 @@
+{
+  "installCommand": "",
+  "buildCommand": "",
+  "outputDirectory": "public",
+  "nodeVersion": "22.11.0"
+}
