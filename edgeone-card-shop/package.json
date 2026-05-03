@@ -1,9 +1,0 @@
-{
-  "name": "edgeone-card-shop",
-  "private": true,
-  "version": "1.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "npx serve public -l 4173"
-  }
-}
