@@ -8,7 +8,7 @@ async function api(url, options = {}) {
     ...options,
   });
   const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw new Error(data.error || "请求失败");
+  if (!res.ok) throw new Error(data.error || `请求失败：HTTP ${res.status}`);
   return data;
 }
 
@@ -27,6 +27,11 @@ function setMessage(text, type = "") {
 
 async function login(event) {
   event.preventDefault();
+  const button = $("#loginButton");
+  const oldText = button.innerHTML;
+  button.disabled = true;
+  button.innerHTML = '<i class="bi bi-hourglass-split"></i>登录中';
+  $("#loginError").textContent = "";
   const username = $("#username").value.trim();
   const password = $("#password").value;
   try {
@@ -37,6 +42,9 @@ async function login(event) {
     await bootstrap();
   } catch (error) {
     $("#loginError").textContent = error.message;
+  } finally {
+    button.disabled = false;
+    button.innerHTML = oldText;
   }
 }
 
@@ -49,10 +57,11 @@ async function bootstrap() {
     $("#adminApp").hidden = false;
     $("#adminName").textContent = data.admin.username;
     render();
-  } catch {
+  } catch (error) {
     state.authed = false;
     $("#loginPage").hidden = false;
     $("#adminApp").hidden = true;
+    if ($("#loginError")) $("#loginError").textContent = error.message === "未登录" ? "" : error.message;
   }
 }
 
